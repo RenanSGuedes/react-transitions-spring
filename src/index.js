@@ -1,12 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React, { useState } from 'react'
+import ReactDOM from 'react-dom'
+import { useSpring, animated } from 'react-spring'
 
-ReactDOM.render(<App />, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+function Demo() {
+    const [state, toggle] = useState(true)
+    const { x } = useSpring({ from: { x: 0 }, x: state ? 1 : 0, config: { duration: 1000 } })
+    return (
+      <div onClick={() => toggle(!state)}>
+        <animated.div
+          style={{
+            opacity: x.interpolate({ range: [0, 1], output: [0.3, 1] }),
+            transform: x
+              .interpolate({
+                range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
+                output: [1, 0.97, 0.9, 1.1, 0.9, 1.1, 1.03, 1]
+              })
+              .interpolate(x => `scale(${x})`)
+          }}>
+          click
+        </animated.div>
+      </div>
+    )
+  }
+  
+  ReactDOM.render(<Demo />, document.getElementById('root'))

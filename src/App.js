@@ -1,26 +1,18 @@
+import { useSpring, animated } from 'react-spring'
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+export default function App() {
+  const props = useSpring({ x:1, from: { x: 0}})
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <animated.div
+      style={{
+        transform: props.x
+          .interpolate({
+            range: [0, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 1],
+            output: [1, 0.97, 0.9, 1.1, 0.9, 1.1, 1.03, 1]
+          })
+          .interpolate(x => `scale(${x})`)
+      }}
+    />
+  )
 }
-
-export default App;
